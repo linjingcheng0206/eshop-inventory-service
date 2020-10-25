@@ -65,9 +65,9 @@ public class ProductInventoryController {
 
 	@RequestMapping("/findByProductId")
 	@ResponseBody
-	public ProductInventory findByProductId(Long id){
+	public ProductInventory findByProductId(Long productId){
 		try {
-			return productInventoryService.findByProductId(id);
+			return productInventoryService.findByProductId(productId);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
