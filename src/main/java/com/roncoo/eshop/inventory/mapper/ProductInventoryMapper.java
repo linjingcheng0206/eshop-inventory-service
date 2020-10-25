@@ -1,12 +1,11 @@
 package com.roncoo.eshop.inventory.mapper;
 
+import com.roncoo.eshop.inventory.model.ProductInventory;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
-
-import com.roncoo.eshop.inventory.model.ProductInventory;
 
 @Mapper
 public interface ProductInventoryMapper {
@@ -22,5 +21,8 @@ public interface ProductInventoryMapper {
 	
 	@Select("SELECT * FROM product_inventory WHERE id=#{id}")  
 	public ProductInventory findById(Long id);
+
+	@Select("SELECT * FROM product_inventory WHERE product_id=#{productId}")
+	public ProductInventory findByProductId(Long productId);
 	
 }

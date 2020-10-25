@@ -1,12 +1,12 @@
 package com.roncoo.eshop.inventory.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.roncoo.eshop.inventory.model.ProductInventory;
+import com.roncoo.eshop.inventory.service.ProductInventoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.roncoo.eshop.inventory.mapper.ProductInventoryMapper;
-import com.roncoo.eshop.inventory.model.ProductInventory;
-import com.roncoo.eshop.inventory.service.ProductInventoryService;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
@@ -40,6 +40,18 @@ public class ProductInventoryServiceImpl implements ProductInventoryService {
 
 	public ProductInventory findById(Long id) {
 		return productInventoryMapper.findById(id);
+	}
+
+	public ProductInventory findByProductId(Long productId) {
+		Jedis jedis = jedisPool.getResource();
+		String dataJSON = jedis.get("product_inventory_" + productId);//从redis里面查询
+		if(dataJSON != null && !"".equals(dataJSON)) {
+			JSONObject dataJSONObject = JSONObject.parseObject(dataJSON);
+			dataJSONObject.put("id", "-1");
+			return JSONObject.parseObject(dataJSONObject.toJSONString(), ProductInventory.class);
+		} else {
+			return productInventoryMapper.findByProductId(productId);//从数据库里面查询
+		}
 	}
 
 }

@@ -1,12 +1,13 @@
 package com.roncoo.eshop.inventory.web.controller;
 
+import com.roncoo.eshop.inventory.model.ProductInventory;
+import com.roncoo.eshop.inventory.service.ProductInventoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.roncoo.eshop.inventory.model.ProductInventory;
-import com.roncoo.eshop.inventory.service.ProductInventoryService;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 @RestController
 @RequestMapping("/product-inventory")
@@ -58,6 +59,17 @@ public class ProductInventoryController {
 			return productInventoryService.findById(id);
 		} catch (Exception e) {
 			e.printStackTrace(); 
+		}
+		return new ProductInventory();
+	}
+
+	@RequestMapping("/findByProductId")
+	@ResponseBody
+	public ProductInventory findByProductId(Long id){
+		try {
+			return productInventoryService.findByProductId(id);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return new ProductInventory();
 	}
